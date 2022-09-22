@@ -64,8 +64,6 @@ class ChartingState extends MusicBeatState
 
 	var dummyArrow:FlxSprite;
 
-	var noEscape:Bool = false;
-
 	var curRenderedNotes:FlxTypedGroup<Note>;
 	var curRenderedSustains:FlxTypedGroup<FlxSprite>;
 
@@ -239,12 +237,6 @@ class ChartingState extends MusicBeatState
 
 		add(blackBorder);
 		add(snapText);
-
-		if (!MainMenuState.debugTools)
-		{
-			if (PlayState.SONG.song.toLowerCase() == 'devils-gambit' || PlayState.SONG.song.toLowerCase() == 'bad-time' || PlayState.SONG.song.toLowerCase() == 'despair')
-				noEscape = true;
-		}
 	}
 
 	function addSongUI():Void
@@ -861,41 +853,7 @@ class ChartingState extends MusicBeatState
 				dummyArrow.y = Math.floor(FlxG.mouse.y / space) * space;
 		}
 
-		if (FlxG.keys.justPressed.ENTER && !noEscape)
-		{
-			// let only us cheat to get the secret song because we are the devs
-			// therefore we control the game
-			// therefore we control YOU :)
-			// look behind you
-			var notAllowed:Array<String> = [
-				'gose', 'saness', 'satanic-funkin', 'bad-to-the-bone', 'bonedoggle', 'ritual', 'freaky-machine', 'devils-gambit', 'bad-time', 'despair', 'burning-in-hell', 'final-stretch'
-			];
-
-			for (i in 0...notAllowed.length)
-			{
-				if ((!_song.song.toLowerCase().contains(notAllowed[i]) || MainMenuState.debugTools)
-				|| (FlxG.save.data.hasgenocided && _song.song.toLowerCase() == 'burning-in-hell') || (FlxG.save.data.haspacifisted && _song.song.toLowerCase() == 'final-stretch')
-				|| (FlxG.save.data.weeksbeat[0] && _song.song.toLowerCase() == 'statanic-funkin')
-				|| (FlxG.save.data.weeksbeat[1] && (FlxG.save.data.hasgenocided && _song.song.toLowerCase() == 'bad-to-the-bone') || (FlxG.save.data.haspacifisted && _song.song.toLowerCase() == 'bonedoggle'))
-				|| (FlxG.save.data.weeksbeat[2] && (_song.song.toLowerCase() == 'ritual' || _song.song.toLowerCase() == 'freaky-machine'))
-				)
-				{
-					lastSection = curSection;
-					PlayState.SONG = _song;
-					FlxG.sound.music.stop();
-					vocals.stop();
-					LoadingState.target = new PlayState();
-					LoadingState.stopMusic = true;
-					FlxG.switchState(new LoadingState());
-				}
-				else
-				{
-					throw new ValueException("You really thought it was funny to get the secret song by cheating?");
-				}
-			}
-		}
-
-		if (FlxG.keys.justPressed.BACKSPACE && !noEscape)
+		if (FlxG.keys.justPressed.BACKSPACE)
 		{
 			lastSection = curSection;
 			FlxG.sound.music.stop();
@@ -949,7 +907,7 @@ class ChartingState extends MusicBeatState
 				if (FlxG.keys.justPressed.LEFT || FlxG.keys.justPressed.A)
 					changeSection(curSection - shiftThing);
 			}
-			if (FlxG.keys.justPressed.SPACE && !noEscape)
+			if (FlxG.keys.justPressed.SPACE)
 			{
 				if (FlxG.sound.music.playing)
 				{
