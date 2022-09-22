@@ -92,11 +92,6 @@ class ChartingState extends MusicBeatState
 	var player3Icon:HealthIcon;
 
 	private var lastNote:Note;
-	var bendy:FlxSprite;
-	var cuphead:FlxSprite;
-	var sans:FlxSprite;
-	var jumpscareStatic:FlxSprite;
-	var scare:FlxSound;
 	var claps:Array<Note> = [];
 
 	public var snapText:FlxText;
@@ -244,45 +239,6 @@ class ChartingState extends MusicBeatState
 
 		add(blackBorder);
 		add(snapText);
-
-		bendy = new FlxSprite(-410, -980);
-		bendy.frames = Paths.getSparrowAtlas('bonusSongs/NightmareJumpscares03', 'shared');
-		bendy.animation.addByPrefix('play', 'Emmi instance 1', 24, false);
-		bendy.antialiasing = FlxG.save.data.highquality;
-		bendy.updateHitbox();
-		bendy.scrollFactor.set();
-		bendy.alpha = 0;
-		add(bendy);
-
-		cuphead = new FlxSprite(-900, -800);
-		cuphead.frames = Paths.getSparrowAtlas('bonusSongs/NightmareJumpscares01', 'shared');
-		cuphead.animation.addByPrefix('play', 'CupScare instance 1', 24, false);
-		cuphead.antialiasing = FlxG.save.data.highquality;
-		cuphead.updateHitbox();
-		cuphead.scrollFactor.set();
-		cuphead.alpha = 0;
-		add(cuphead);
-
-		sans = new FlxSprite(-210, -630);
-		sans.frames = Paths.getSparrowAtlas('bonusSongs/NightmareJumpscares02', 'shared');
-		sans.animation.addByPrefix('play', 'Wussup Bitch instance 1', 24, false);
-		sans.antialiasing = FlxG.save.data.highquality;
-		sans.updateHitbox();
-		sans.scrollFactor.set();
-		sans.alpha = 0;
-		add(sans);
-
-		jumpscareStatic = new FlxSprite(0, 0);
-		jumpscareStatic.frames = Paths.getSparrowAtlas('bonusSongs/static', 'shared');
-		jumpscareStatic.animation.addByPrefix('static', 'static', 24, true);
-		jumpscareStatic.antialiasing = FlxG.save.data.highquality;
-		jumpscareStatic.updateHitbox();
-		jumpscareStatic.scrollFactor.set();
-		jumpscareStatic.alpha = 1.0;
-		jumpscareStatic.setGraphicSize(Std.int(jumpscareStatic.width * 1.3));
-		jumpscareStatic.screenCenter();
-		jumpscareStatic.visible = false;
-		add(jumpscareStatic);
 
 		if (!MainMenuState.debugTools)
 		{
@@ -861,87 +817,6 @@ class ChartingState extends MusicBeatState
 
 		if (FlxG.mouse.justPressed)
 		{
-			if (!MainMenuState.debugTools)
-			{
-				if (PlayState.SONG.song.toLowerCase() == 'despair' && bendy.alpha == 0)
-				{
-					bendy.alpha = 1;
-					bendy.animation.play('play');
-					jumpscareStatic.animation.play('static');
-					FlxG.sound.play(Paths.sound('Lights_Turn_On'));
-					FlxG.sound.play(Paths.sound('scare_bendy'));
-	
-					FlxG.sound.music.pause();
-					vocals.pause();
-	
-					FlxTransitionableState.skipNextTransIn = true;
-					FlxTransitionableState.skipNextTransOut = true;
-	
-					new FlxTimer().start(0.66, function(tmr:FlxTimer)
-					{
-						jumpscareStatic.visible = true;
-						FlxTween.color(jumpscareStatic, 1.85, FlxColor.WHITE, FlxColor.BLACK, {ease: FlxEase.quadOut});
-						bendy.alpha = 0.0;
-					});
-	
-					JumpscareState.allowRetry = false;
-					new FlxTimer().start(3, function(tmr:FlxTimer)
-					{
-						Main.switchState(new JumpscareState());
-					});
-				}
-	
-				if (PlayState.SONG.song.toLowerCase() == 'devils-gambit' && cuphead.alpha == 0)
-				{
-					cuphead.alpha = 1;
-					cuphead.animation.play('play');
-					jumpscareStatic.animation.play('static');
-					FlxG.sound.play(Paths.sound('Lights_Turn_On'));
-					FlxG.sound.play(Paths.sound('scare_cuphead'));
-	
-					FlxTransitionableState.skipNextTransIn = true;
-					FlxTransitionableState.skipNextTransOut = true;
-	
-					new FlxTimer().start(0.91, function(tmr:FlxTimer)
-					{
-						jumpscareStatic.visible = true;
-						FlxTween.color(jumpscareStatic, 1.85, FlxColor.WHITE, FlxColor.BLACK, {ease: FlxEase.quadOut});
-						cuphead.alpha = 0.0;
-					});
-	
-					JumpscareState.allowRetry = false;
-					new FlxTimer().start(3, function(tmr:FlxTimer)
-					{
-						Main.switchState(new JumpscareState());
-					});
-				}
-	
-				if (PlayState.SONG.song.toLowerCase() == 'bad-time' && sans.alpha == 0)
-				{
-					sans.alpha = 1;
-					sans.animation.play('play');
-					jumpscareStatic.animation.play('static');
-					FlxG.sound.play(Paths.sound('Lights_Turn_On'));
-					FlxG.sound.play(Paths.sound('scare_sans'));
-	
-					FlxTransitionableState.skipNextTransIn = true;
-					FlxTransitionableState.skipNextTransOut = true;
-	
-					new FlxTimer().start(0.875, function(tmr:FlxTimer)
-					{
-						jumpscareStatic.visible = true;
-						FlxTween.color(jumpscareStatic, 1.85, FlxColor.WHITE, FlxColor.BLACK, {ease: FlxEase.quadOut});
-						sans.alpha = 0.0;
-					});
-	
-					JumpscareState.allowRetry = false;
-					new FlxTimer().start(3, function(tmr:FlxTimer)
-					{
-						Main.switchState(new JumpscareState());
-					});
-				}
-			}
-
 			if (FlxG.mouse.overlaps(curRenderedNotes))
 			{
 				curRenderedNotes.forEach(function(note:Note)
@@ -984,76 +859,6 @@ class ChartingState extends MusicBeatState
 				dummyArrow.y = FlxG.mouse.y;
 			else
 				dummyArrow.y = Math.floor(FlxG.mouse.y / space) * space;
-		}
-		if (FlxG.keys.justPressed.ANY)
-		{
-			if (PlayState.SONG.song.toLowerCase() == 'despair' && bendy.alpha == 0 && !MainMenuState.debugTools)
-			{
-				bendy.alpha = 1;
-				bendy.animation.play('play');
-				jumpscareStatic.animation.play('static');
-				FlxG.sound.play(Paths.sound('scare_bendy'));
-				FlxG.sound.music.pause();
-				vocals.pause();
-				FlxTransitionableState.skipNextTransIn = true;
-				FlxTransitionableState.skipNextTransOut = true;
-				new FlxTimer().start(0.66, function(tmr:FlxTimer)
-				{
-					jumpscareStatic.visible = true;
-					FlxTween.color(jumpscareStatic, 1.85, FlxColor.WHITE, FlxColor.BLACK, {ease: FlxEase.quadOut});
-				});
-
-				JumpscareState.allowRetry = false;
-				new FlxTimer().start(3, function(tmr:FlxTimer)
-				{
-					Main.switchState(new JumpscareState());
-				});
-			}
-			if (PlayState.SONG.song.toLowerCase() == 'devils-gambit' && cuphead.alpha == 0 && !MainMenuState.debugTools)
-			{
-				cuphead.alpha = 1;
-				cuphead.animation.play('play');
-				jumpscareStatic.animation.play('static');
-				FlxG.sound.play(Paths.sound('scare_cuphead'));
-				FlxTransitionableState.skipNextTransIn = true;
-				FlxTransitionableState.skipNextTransOut = true;
-				new FlxTimer().start(0.91, function(tmr:FlxTimer)
-				{
-					jumpscareStatic.visible = true;
-					FlxTween.color(jumpscareStatic, 1.85, FlxColor.WHITE, FlxColor.BLACK, {ease: FlxEase.quadOut});
-				});
-
-				JumpscareState.allowRetry = false;
-				new FlxTimer().start(3, function(tmr:FlxTimer)
-				{
-					Main.switchState(new JumpscareState());
-				});
-			}
-			if (PlayState.SONG.song.toLowerCase() == 'bad-time' && sans.alpha == 0 && !MainMenuState.debugTools)
-			{
-				sans.alpha = 1;
-				sans.animation.play('play');
-				jumpscareStatic.animation.play('static');
-				FlxG.sound.play(Paths.sound('scare_sans'));
-				FlxTransitionableState.skipNextTransIn = true;
-				FlxTransitionableState.skipNextTransOut = true;
-				new FlxTimer().start(0.875, function(tmr:FlxTimer)
-				{
-					jumpscareStatic.visible = true;
-					FlxTween.color(jumpscareStatic, 1.85, FlxColor.WHITE, FlxColor.BLACK, {ease: FlxEase.quadOut});
-				});
-
-				JumpscareState.allowRetry = false;
-				new FlxTimer().start(3, function(tmr:FlxTimer)
-				{
-					Main.switchState(new JumpscareState());
-				});
-			}
-		}
-		if (sans.alpha == 1 || bendy.alpha == 1 || cuphead.alpha == 1) // cam shake and zoom if jumpscare is active
-		{
-			FlxG.camera.zoom = FlxMath.lerp(FlxG.camera.zoom, 1.35, 0.08);
-			camera.shake(0.010, 0.015);
 		}
 
 		if (FlxG.keys.justPressed.ENTER && !noEscape)
