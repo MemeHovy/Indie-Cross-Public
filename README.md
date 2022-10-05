@@ -1,6 +1,4 @@
-<!-- <p align="center">
-	<img width="600" height="600" src="art/iconOG.png"> 
-</p> -->
+# This doesn't even work lol, why are y'all forking it
 
 # Friday Night Funkin': Indie Cross with html5 support (No video cutscenes, sorry)
 ## About
